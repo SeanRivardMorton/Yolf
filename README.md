@@ -10,8 +10,6 @@ If for whatever reason the user wants to see their old writing, they can click a
 I want different layouts, and themes, and fonts. I want the user to be able to customize their writing experience, but I still want it to be simple.
 I want it to connect to your Spotify or audo, so that background colours can get synchronized with the music.
 
-(Center this for a fun vim workout)
-
                  __   _____  _    ___
                  \ \ / / _ \| |  | __|
                   \ V / (_) | |__| _| 
