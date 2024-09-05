@@ -1,135 +1,36 @@
-# Yolf
-This is a writing application intended for people who want to just write, aimlessly
-
-## Description
-Yolf is for people that journal, or write for fun. Really, just a big dumb brain dump. All over the paper.
-
-I want it to be very minimalistic, not for the purpose of looking good- I want it to be minimalistic so that the user can focus on the writing.
-I want an extremely simple interface, with a text box and a save button. 
-If for whatever reason the user wants to see their old writing, they can click a button to see a list of their old entries.
-I want different layouts, and themes, and fonts. I want the user to be able to customize their writing experience, but I still want it to be simple.
-I want it to connect to your Spotify or audo, so that background colours can get synchronized with the music.
-
-                 __   _____  _    ___
-                 \ \ / / _ \| |  | __|
-                  \ V / (_) | |__| _| 
-                   |_| \___/|____|_|               
-                                                            
-
-                   ___________________
-                  |                   | 
-                  |                   |
-                  |                   |
-                  |                   |
-                  |                   |
-                  |                   |
-                  |                   |
-                  |                   |
-                  |                   |
-                  |                   |
-                  |                   |
-                  |                   |
-                  |                   |
-                  |                   |
-                  |                   |
-                  |                   |
-                  |                   |
-                  |                   |
-                  |                   |
-                  |                   |
-                  |                   |
-                  |                   |
-                  |                   |
-                  |                   |
-                  |                   |
-                ___________________________
-
-## Features
-
-- [ ] User can write in a text box
-- [ ] User can save their writing
-- [ ] User can see a list of their old entries
-- [ ] User can change the layout of the text box
-- [ ] User can change the theme of the text box
-- [ ] User can change the font of the text box
-
-## Technologies Used
-
-- React
-- Node.js
-- Express
-- PostgreSQL
-- Spotify API
-- AWS EC2
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
 
-1. Clone the repository.
-2. Run `pnpm install` to install the dependencies.
-3. Run `pnpm dev` to start the application.
+First, run the development server:
 
-## System Architecture
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-### Web Server (Next.js)
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-Libraries:
-- React
-- Next.js
-- React Query
-- Tailwind CSS
-- React Hook Form
-- ShadUI
-- Zod
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-### Database (PostgreSQL)
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-Tables:
-- Users
-- Entries
+## Learn More
 
-### API Server (Express)
+To learn more about Next.js, take a look at the following resources:
 
-Endpoints:
-- GET /entries
-- POST /entries
-- PUT /entries
-- DELETE /entries
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-## Milestones
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-### Week 1
+## Deploy on Vercel
 
-- [ ] Set up the Next.js project
-- [ ] Set up the Express project
-- [ ] Set up the PostgreSQL database
-- [ ] Create the Users table
-- [ ] Create the Entries table
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-### Week 2
-
-- [ ] Create the GET /entries endpoint
-- [ ] Create the POST /entries endpoint
-- [ ] Create the PUT /entries endpoint
-- [ ] Create the DELETE /entries endpoint
-- [ ] Create the user interface
-
-### Week 3
-
-- [ ] Implement the user interface
-- [ ] Implement the GET /entries endpoint
-- [ ] Implement the POST /entries endpoint
-- [ ] Implement the PUT /entries endpoint
-- [ ] Implement the DELETE /entries endpoint
-
-### Week 4
-
-- [ ] Test the application
-- [ ] Deploy the application
-
-
-
-
-
-
-
-
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
