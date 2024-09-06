@@ -15,6 +15,7 @@ export async function GET() {
     return Response.json({ message: "No entries found" }, { status: 404 })
   }
 
+
   return Response.json({ status: 200, result });
 }
 
@@ -36,9 +37,3 @@ export async function POST(request: Request) {
 }
 
 
-export async function DELETE(request: Request, params: { id: string }) {
-  const id = parseInt(params.id)
-  console.log('DELETE /entries', id)
-
-  return Response.json({ message: "Deleting Entries" });
-}

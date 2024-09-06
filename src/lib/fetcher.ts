@@ -5,6 +5,8 @@ interface Fetcher {
   DELETE: (url: string) => Promise<any>
 }
 
+const BASE_URL = 'http://localhost:3000/api';
+
 // const users = fetcher.GET('users');
 // const entries = fetcher.GET('entries');
 //
@@ -44,7 +46,8 @@ const handleErrors = async (response: Response) => {
 
 const customFetch = async (url: string, options: RequestInit) => {
   try {
-    const response = await fetch(url, options);
+    const response = await fetch(`${BASE_URL}/${url}`, options);
+    console.log(response)
     return await handleErrors(response);
   } catch (e) {
     console.error(e);
@@ -61,7 +64,7 @@ const fetcher: Fetcher = {
       }
     });
 
-    return response.json();
+    return response
   },
   POST: async (url: string, body: any) => {
     const response = await customFetch(url, {
