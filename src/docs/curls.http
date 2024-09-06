@@ -1,0 +1,17 @@
+### Multi-line url
+GET http://localhost:3000/api/entries
+
+### Single-line url
+GET http://localhost:3000/api/user
+
+### multi-line url
+GET http://localhost:3000
+    /api
+    /entries
+
+### Test
+POST http://localhost:3000
+     /api
+     /entries
+
+< ./new-user.json
