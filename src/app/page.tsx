@@ -1,8 +1,17 @@
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import Image from "next/image";
+import db from "@/db";
+import { user } from "@/schema";
 
-export default function Home() {
+const fn = async () => {
+  const users = await db.select().from(user)
+
+  return users
+}
+
+export default async function Home() {
+  const data = await fn()
+  console.log(data)
   return (
     <main className="flex flex-col">
       <div className="flex flex-row justify-between">
