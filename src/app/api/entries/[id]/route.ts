@@ -1,5 +1,5 @@
 import db from "@/db"
-import { entries } from "@/schema"
+import { entries } from "@/entries"
 import { eq } from "drizzle-orm"
 
 export async function GET(request: Request, { params }: { params: { slug: string }) {
