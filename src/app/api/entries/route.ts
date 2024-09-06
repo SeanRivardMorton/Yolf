@@ -1,6 +1,5 @@
 import db from "@/db";
-import { entries } from "@/entries";
-import { request } from "http";
+import { entries } from "@/schema";
 
 export async function GET() {
   console.log('GET ENTRIES')
