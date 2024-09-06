@@ -12,6 +12,10 @@ export async function GET(request: Request, { params }: { params: { slug: string
     return Response.json({ message: "Entry not found" }, { status: 404 })
   }
 
+  if (entry.length < 1) {
+    return Response.json({ message: "No entries found" }, { status: 404 })
+  }
+
   return Response.json({ entry })
 }
 

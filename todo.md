@@ -6,10 +6,10 @@ TODO:
     [X] - Implement Text Input
     [ ] - Make it look nice
 4) Implement Database
-    [ ] - Implement Users Table
-    [ ] - Implement Entries Table
-    [ ] - Implement Drizzle
+    [X] - Implement Users Table
+    [X] - Implement Entries Table
+    [x] - Implement Drizzle
 5) Implement Text Editor Back-End
-    [ ] - GET /entries
-    [ ] - POST /entries
-    [ ] - DELETE /entries
+    [X] - GET /entries
+    [X] - POST /entries
+    [X] - DELETE /entries
