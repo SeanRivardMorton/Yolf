@@ -9,7 +9,7 @@
 
 import { useToast } from "@/hooks/use-toast";
 import fetcher from "@/lib/fetcher";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import React from "react";
 import { createContext, useContext, useState } from "react"
 
@@ -33,7 +33,15 @@ const EditorStateContext = createContext<EditorStateContextType | undefined>(und
 
 // The first implementation will simply be a list of documents. No Graphs. Just a list sorted by date.
 export const EditorStateProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { data, isLoading, isSuccess } = useQuery({
+  // const { data, isLoading, isSuccess } = useQuery({
+  //   queryKey: ['entries'],
+  //   queryFn: async () => {
+  //     const data = await fetcher.GET('entries')
+  //     return data.result
+  //   }
+  // })
+
+  const { data, isLoading, isSuccess } = useSuspenseQuery({
     queryKey: ['entries'],
     queryFn: async () => {
       const data = await fetcher.GET('entries')
@@ -48,11 +56,13 @@ export const EditorStateProvider: React.FC<{ children: React.ReactNode }> = ({ c
 
   // TODO: This is a hack. I need to figure out how to get the data from the query
   // without having to use this useEffect. Maybe it means using zustand.
-  React.useEffect(() => {
-    if (data) {
-      setDocumentHistory(data)
-    }
-  }, [data?.length])
+  // 
+  // ...and it's not working. what the fuck is prefetch even for the query provider isn't populated
+  // React.useEffect(() => {
+  //   if (data) {
+  //     setDocumentHistory(data)
+  //   }
+  // }, [data?.length])
 
   const { toast } = useToast()
   console.log('EditorStateProvider: documentHistory', documentHistory)
