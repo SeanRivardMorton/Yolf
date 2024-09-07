@@ -27,14 +27,12 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
   const id = z.coerce.number().parse(params.id)
 
   const result = await db.delete(entries).where(eq(entries.id, id))
+  console.log(result)
 
   if (!result) {
     return Response.json({ message: "Error" }, { status: 404 })
   }
 
-  if (result.length < 1) {
-    return Response.json({ message: "No entries found" }, { status: 404 })
-  }
 
   return Response.json({ message: "Deleting Entries" });
 }

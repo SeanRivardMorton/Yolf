@@ -9,9 +9,9 @@
 
 import { useToast } from "@/hooks/use-toast";
 import fetcher from "@/lib/fetcher";
-import { useMutation, useQuery, useSuspenseQuery } from "@tanstack/react-query";
+import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import React from "react";
-import { createContext, useContext, useState } from "react"
+import { createContext, useContext, useState } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
 
 type Document = {
@@ -26,6 +26,8 @@ type EditorStateContextType = {
   loadNextDocument: () => void;
   loadPreviousDocument: () => void;
   saveDocument: (document: Document) => void;
+  deleteDocument: (document: Document) => void;
+  addDocument: (document: Document) => void;
   isSuccess: boolean;
   isLoading: boolean;
   form: UseFormReturn<{ content: string }>;
@@ -47,6 +49,22 @@ export const EditorStateProvider: React.FC<{ children: React.ReactNode }> = ({ c
   const mutation = useMutation({
     mutationFn: async (document: Document) => {
       const data = await fetcher.PUT(`entries/${document.id}`, document)
+      return data
+    },
+    mutationKey: ['entries']
+  })
+
+  const deleteMutation = useMutation({
+    mutationFn: async (document: Document) => {
+      const data = await fetcher.DELETE(`entries/${document.id}`)
+      return data
+    },
+    mutationKey: ['entries']
+  })
+
+  const addMutation = useMutation({
+    mutationFn: async (document: Document) => {
+      const data = await fetcher.POST(`entries`, document)
       return data
     },
     mutationKey: ['entries']
@@ -118,11 +136,45 @@ export const EditorStateProvider: React.FC<{ children: React.ReactNode }> = ({ c
     })
   }
 
+  const deleteDocument = async (document: Document) => {
+    console.log('EditorStateProvider: deleteDocument', document)
+    const data = await deleteMutation.mutateAsync(document)
+    console.log('EditorStateProvider: deleteDocument', data)
+    toast({
+      title: 'Document deleted',
+      description: `Document ${document.id} deleted`,
+      duration: 5000,
+    })
+  }
+
+  const addDocument = async (document: Document) => {
+    console.log('EditorStateProvider: addDocument', document)
+    const data = await addMutation.mutateAsync(document)
+    console.log('EditorStateProvider: addDocument', data)
+    toast({
+      title: 'Document added',
+      description: `Document ${data.id} added`,
+      duration: 5000,
+    })
+  }
+
+
   // log the current document
   console.log('useEditorEngine: currentDocument', currentDocument)
 
   return (
-    <EditorStateContext.Provider value={{ form, isLoading, isSuccess, currentDocument, loadNextDocument, loadPreviousDocument, goToDocument, saveDocument }}>
+    <EditorStateContext.Provider value={{
+      form,
+      isLoading,
+      isSuccess,
+      currentDocument,
+      loadNextDocument,
+      loadPreviousDocument,
+      goToDocument,
+      saveDocument,
+      deleteDocument,
+      addDocument
+    }}>
       {children}
     </EditorStateContext.Provider>
   );

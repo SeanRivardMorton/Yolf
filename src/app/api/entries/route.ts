@@ -24,8 +24,8 @@ export async function POST(request: Request) {
   const body = await request.json()
 
   const result = await db.insert(entries).values({
-    title: body.title,
-    content: body.content,
+    title: 'New Entry',
+    content: 'New Entry Content',
   })
 
   if (!result) {
