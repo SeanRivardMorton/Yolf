@@ -63,6 +63,7 @@ const fetcher: Fetcher = {
         'Content-Type': 'application/json'
       }
     });
+    console.log('fetcher.GET', response)
 
     return response
   },

@@ -1,13 +1,15 @@
 import { Button } from "../button"
 import { ChevronLeft, ChevronRight, HomeIcon } from "lucide-react"
+import { useEditorState } from "./hooks/useEditorEngine"
 
 
 function Controls() {
+  const { loadNextDocument, loadPreviousDocument } = useEditorState()
 
   const controls = [
-    { name: 'back', icon: <ChevronLeft className="h-8 w-8" /> },
-    { name: 'home', icon: <HomeIcon className="h-8 w-8" /> },
-    { name: 'forward', icon: <ChevronRight className="h-8 w-8" /> },
+    { name: 'back', icon: <ChevronLeft className="h-8 w-8" onClick={loadPreviousDocument} /> },
+    // { name: 'home', icon: <HomeIcon className="h-8 w-8" onClick={() => goToDocument(0)} /> },
+    { name: 'forward', icon: <ChevronRight className="h-8 w-8" onClick={loadNextDocument} /> },
   ]
 
   return (
