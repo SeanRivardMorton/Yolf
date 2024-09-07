@@ -8,7 +8,7 @@ import EditorEngine, { Controls, Sidebar, Footer, Editor } from "@/components/ui
 export default async function Home() {
   const queryClient = new QueryClient()
 
-  await queryClient.prefetchQuery({
+  queryClient.prefetchQuery({
     queryKey: ['posts'],
     queryFn: () => fetcher.GET('entries'),
   })
