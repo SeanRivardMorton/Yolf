@@ -12,10 +12,12 @@ import fetcher from "@/lib/fetcher";
 import { useMutation, useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import React from "react";
 import { createContext, useContext, useState } from "react"
+import { useForm, UseFormReturn } from "react-hook-form";
 
 type Document = {
   id: string;
   content: string;
+  title: string;
 };
 
 type EditorStateContextType = {
@@ -26,6 +28,7 @@ type EditorStateContextType = {
   saveDocument: (document: Document) => void;
   isSuccess: boolean;
   isLoading: boolean;
+  form: UseFormReturn<{ content: string }>;
 };
 
 const EditorStateContext = createContext<EditorStateContextType | undefined>(undefined);
@@ -33,14 +36,6 @@ const EditorStateContext = createContext<EditorStateContextType | undefined>(und
 
 // The first implementation will simply be a list of documents. No Graphs. Just a list sorted by date.
 export const EditorStateProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // const { data, isLoading, isSuccess } = useQuery({
-  //   queryKey: ['entries'],
-  //   queryFn: async () => {
-  //     const data = await fetcher.GET('entries')
-  //     return data.result
-  //   }
-  // })
-
   const { data, isLoading, isSuccess } = useSuspenseQuery({
     queryKey: ['entries'],
     queryFn: async () => {
@@ -49,20 +44,24 @@ export const EditorStateProvider: React.FC<{ children: React.ReactNode }> = ({ c
     }
   })
 
+  const mutation = useMutation({
+    mutationFn: async (document: Document) => {
+      const data = await fetcher.PUT(`entries/${document.id}`, document)
+      return data
+    },
+    mutationKey: ['entries']
+  })
+
+  const form = useForm({
+    defaultValues: {
+      content: data?.[0].content
+    }
+  })
+
 
   const [documentHistory, setDocumentHistory] = useState<Document[]>(data);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [currentDocument, setCurrentDocument] = useState<Document | null>(data?.[currentIndex]);
-
-  // TODO: This is a hack. I need to figure out how to get the data from the query
-  // without having to use this useEffect. Maybe it means using zustand.
-  // 
-  // ...and it's not working. what the fuck is prefetch even for the query provider isn't populated
-  // React.useEffect(() => {
-  //   if (data) {
-  //     setDocumentHistory(data)
-  //   }
-  // }, [data?.length])
 
   const { toast } = useToast()
   console.log('EditorStateProvider: documentHistory', documentHistory)
@@ -85,7 +84,7 @@ export const EditorStateProvider: React.FC<{ children: React.ReactNode }> = ({ c
     if (currentIndex < documentHistory.length - 1) {
       setCurrentIndex((prevIndex) => prevIndex + 1);
       setCurrentDocument(documentHistory[currentIndex + 1]);
-      console.log('EditorStateProvider: loadNextDocument', currentIndex, documentHistory)
+      form.reset({ content: documentHistory[currentIndex + 1].content })
       toast({
         title: 'Document loaded',
         description: `Document ${currentIndex + 1} loaded`,
@@ -95,10 +94,11 @@ export const EditorStateProvider: React.FC<{ children: React.ReactNode }> = ({ c
   };
 
   const loadPreviousDocument = () => {
+    console.log('EditorStateProvider: loadPreviousDocument', currentIndex, documentHistory)
     if (currentIndex > 0) {
       setCurrentIndex((prevIndex) => prevIndex - 1);
       setCurrentDocument(documentHistory[currentIndex - 1]);
-      console.log('EditorStateProvider: loadPreviousDocument', currentIndex, documentHistory)
+      form.reset({ content: documentHistory[currentIndex - 1].content })
       toast({
         title: 'Document loaded',
         description: `Document ${currentIndex - 1} loaded`,
@@ -107,13 +107,22 @@ export const EditorStateProvider: React.FC<{ children: React.ReactNode }> = ({ c
     }
   };
 
-  const saveDocument = (document: Document) => {
-    setDocumentHistory([...documentHistory, document]);
-    console.log('EditorStateProvider: saveDocument', documentHistory)
+  const saveDocument = async (document: Document) => {
+    console.log('EditorStateProvider: saveDocument', document)
+    const data = await mutation.mutateAsync(document)
+    console.log('EditorStateProvider: saveDocument', data)
+    toast({
+      title: 'Document saved',
+      description: `Document ${document.id} saved`,
+      duration: 5000,
+    })
   }
 
+  // log the current document
+  console.log('useEditorEngine: currentDocument', currentDocument)
+
   return (
-    <EditorStateContext.Provider value={{ isLoading, isSuccess, currentDocument, loadNextDocument, loadPreviousDocument, goToDocument, saveDocument }}>
+    <EditorStateContext.Provider value={{ form, isLoading, isSuccess, currentDocument, loadNextDocument, loadPreviousDocument, goToDocument, saveDocument }}>
       {children}
     </EditorStateContext.Provider>
   );

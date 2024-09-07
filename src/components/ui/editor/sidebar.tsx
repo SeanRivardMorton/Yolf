@@ -4,10 +4,10 @@ import { useEditorState } from "./hooks/useEditorEngine";
 
 function Sidebar() {
 
-  const { currentDocument } = useEditorState()
+  const { currentDocument, saveDocument } = useEditorState()
   console.log('SideBar Loaded: Current Document', currentDocument)
   const controls = [
-    // { name: 'Save', icon: <SaveIcon className="h-8 w-8" onClick={() => currentDocument && saveDocument(currentDocument)} /> },
+    { name: 'Save', icon: <SaveIcon className="h-8 w-8" onClick={() => currentDocument && saveDocument(currentDocument)} /> },
     { name: 'Add', icon: <PlusIcon className="h-8 w-8" /> },
   ]
 

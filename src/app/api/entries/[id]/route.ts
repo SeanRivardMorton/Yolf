@@ -1,5 +1,5 @@
 import db from "@/db"
-import { entries } from "@/entries"
+import { entries } from "@/schema"
 import { eq } from "drizzle-orm"
 import { z } from "zod"
 
@@ -37,4 +37,19 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
   }
 
   return Response.json({ message: "Deleting Entries" });
+}
+
+export async function PUT(request: Request) {
+  console.log('PUT /entries/:id')
+
+  const body = await request.json()
+
+  const result = await db.update(entries).set({ title: body.title, content: body.content }).where(eq(entries.id, body.id)).returning({ title: entries.title })
+
+  console.log(result)
+  if (!result) {
+    return Response.json({ message: "Error" }, { status: 404 })
+  }
+
+  return Response.json({ status: 200, result });
 }

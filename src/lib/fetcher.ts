@@ -76,7 +76,7 @@ const fetcher: Fetcher = {
       body: JSON.stringify(body)
     });
 
-    return response.json();
+    return response;
   },
   PUT: async (url: string, body: any) => {
     const response = await customFetch(url, {
@@ -87,7 +87,7 @@ const fetcher: Fetcher = {
       body: JSON.stringify(body)
     });
 
-    return response.json();
+    return response;
   },
   DELETE: async (url: string) => {
     const response = await customFetch(url, {
@@ -97,7 +97,7 @@ const fetcher: Fetcher = {
       }
     });
 
-    return response.json();
+    return response;
   }
 }
 
