@@ -1,17 +1,19 @@
 import db from "@/db";
 import { entries } from "@/schema";
+import { desc } from "drizzle-orm";
 
 export async function GET() {
   console.log('GET ENTRIES')
 
-  const result = await db.select().from(entries)
+  const result = await db.select().from(entries).orderBy(desc(entries.updatedAt))
 
   if (!result) {
     return Response.json({ message: "Error" }, { status: 404 })
   }
 
   if (result.length < 1) {
-    return Response.json({ message: "No entries found" }, { status: 404 })
+    const newDocument = await db.insert(entries).values({ title: 'New Entry', content: 'start writing!' })
+    return Response.json({ status: 200, result: [newDocument] });
   }
 
 

@@ -8,13 +8,13 @@ import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 // instead of splitting it up into tiny files.
 
 export const user = pgTable("user", {
-        id: serial("id"),
-        name: text("name"),
-        email: text("email"),
-        password: text("password"),
-        role: text("role").$type<"admin" | "customer">(),
-        createdAt: timestamp("created_at"),
-        updatedAt: timestamp("updated_at"),
+  id: serial("id"),
+  name: text("name"),
+  email: text("email"),
+  password: text("password"),
+  role: text("role").$type<"admin" | "customer">(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
 });
 
 export const insertUserSchema = createInsertSchema(user);
@@ -23,11 +23,11 @@ export const selectUserSchema = createSelectSchema(user);
 
 // Entries
 export const entries = pgTable("entries", {
-        id: serial("id"),
-        title: text("title"),
-        content: text("content"),
-        createdAt: timestamp("created_at"),
-        updatedAt: timestamp("updated_at"),
+  id: serial("id"),
+  title: text("title"),
+  content: text("content"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
 })
 
 export const insertEntrySchema = createInsertSchema(entries);

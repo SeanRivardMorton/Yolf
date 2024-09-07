@@ -5,13 +5,15 @@ import { useEditorState } from "./hooks/useEditorEngine";
 // displays the amount of documents, and where the current document is.
 // getting hydration errors from Pagination component.
 const Pagination = ({ currentIndex, totalDocuments }: { currentIndex: number; totalDocuments: any }) => {
-  console.log('Pagination', currentIndex, totalDocuments)
+  const { goToDocument } = useEditorState()
   return (
     <div className="flex flex-row">
       {totalDocuments.map((_, index) => (
         <div key={index}>
           {false && index}
-          <SquareIcon className={`h-4 w-4 rounded-lg m-1 ${index === currentIndex ? 'text-stone-700' : 'text-white'}`} />
+          <Button variant="outline" size="icon" onClick={() => goToDocument(index)} className="p-0 m-auto h-8 w-8 bg-stone-950 border-none">
+            <SquareIcon className={`h-4 w-4 ${index === currentIndex ? 'text-stone-700' : 'text-white'}`} />
+          </Button>
         </div>
       ))}
     </div>

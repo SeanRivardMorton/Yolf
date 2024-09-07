@@ -83,12 +83,11 @@ export const EditorStateProvider: React.FC<{ children: React.ReactNode }> = ({ c
 
   const [documentHistory, setDocumentHistory] = useState<Document[]>(data);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const [currentDocument, setCurrentDocument] = useState<Document | null>(data?.[currentIndex]);
 
   const { toast } = useToast()
 
   const goToDocument = (index: number) => {
-    if (index >= 0 && index < documentHistory.length) {
+    if (index >= 0 && index < data.length) {
       setCurrentIndex(index);
       toast({
         title: 'Document loaded',
@@ -128,7 +127,6 @@ export const EditorStateProvider: React.FC<{ children: React.ReactNode }> = ({ c
     const data = await mutation.mutateAsync(document)
     await queryClient.invalidateQueries('entries')
 
-    setCurrentIndex(0)
     toast({
       title: 'Document saved',
       description: `Document ${document.id} saved`,

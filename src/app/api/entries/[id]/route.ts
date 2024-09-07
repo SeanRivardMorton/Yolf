@@ -6,7 +6,7 @@ import { z } from "zod"
 export async function GET(request: Request, { params }: { params: { slug: string } }) {
   console.log(`GET entries/${params.slug}`)
 
-  const entry = await db.select().from(entries).where(eq(entries.id, 1))
+  const entry = await db.select().from(entries).where(eq(entries.id, 1)).orderBy(entries.updatedAt)
 
   if (!entry) {
     return Response.json({ message: "Entry not found" }, { status: 404 })
