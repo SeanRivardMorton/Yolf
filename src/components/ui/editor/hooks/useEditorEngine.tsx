@@ -10,6 +10,7 @@
 import { useToast } from "@/hooks/use-toast";
 import fetcher from "@/lib/fetcher";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import React from "react";
 import { createContext, useContext, useState } from "react"
 
 type Document = {
@@ -32,19 +33,26 @@ const EditorStateContext = createContext<EditorStateContextType | undefined>(und
 
 // The first implementation will simply be a list of documents. No Graphs. Just a list sorted by date.
 export const EditorStateProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [documentHistory, setDocumentHistory] = useState<Document[]>([]);
   const { data, isLoading, isSuccess } = useQuery({
     queryKey: ['entries'],
     queryFn: async () => {
       const data = await fetcher.GET('entries')
-      console.log('EditorStateProvider: data', data)
-      setDocumentHistory(data.result)
       return data.result
     }
   })
 
+
+  const [documentHistory, setDocumentHistory] = useState<Document[]>(data);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [currentDocument, setCurrentDocument] = useState<Document | null>(data?.[currentIndex]);
+
+  // TODO: This is a hack. I need to figure out how to get the data from the query
+  // without having to use this useEffect. Maybe it means using zustand.
+  React.useEffect(() => {
+    if (data) {
+      setDocumentHistory(data)
+    }
+  }, [data?.length])
 
   const { toast } = useToast()
   console.log('EditorStateProvider: documentHistory', documentHistory)
