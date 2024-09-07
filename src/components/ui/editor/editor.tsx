@@ -1,14 +1,12 @@
-import React from "react"
 import { Textarea } from "../textarea"
 import { useEditorState } from "./hooks/useEditorEngine"
-import { Controller, useForm } from "react-hook-form"
+import { Controller } from "react-hook-form"
 
 function Editor() {
-  const { currentDocument, saveDocument, form } = useEditorState()
+  const { currentDocument, saveDocument, form, documentHistory } = useEditorState()
 
-  console.log('Editor: currentDocument', currentDocument)
 
-  const handleSubmit = form.handleSubmit((data) => {
+  const handleSubmit = form.handleSubmit(async (data) => {
     saveDocument({ ...currentDocument, content: data?.content })
   })
 
@@ -26,9 +24,8 @@ function Editor() {
   // --
   // maybe I should incorporate the form into the editor state.
 
-  console.log(currentDocument)
 
-  return <article className="p-8 rounded-lg w-4/5" key={currentDocument.id}>
+  return <article className="p-8 rounded-lg w-4/5" key={documentHistory.length}>
     <form className="h-[1000px]" onBlur={handleSubmit}>
       <Controller
         name="content"

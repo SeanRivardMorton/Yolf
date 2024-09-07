@@ -33,11 +33,11 @@ type EditorStateContextType = {
   isSuccess: boolean;
   isLoading: boolean;
   form: UseFormReturn<{ content: string }>;
+  isAdding: boolean;
+  isDeleting: boolean;
 };
 
 const EditorStateContext = createContext<EditorStateContextType | undefined>(undefined);
-
-
 
 // The first implementation will simply be a list of documents. No Graphs. Just a list sorted by date.
 export const EditorStateProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -86,13 +86,10 @@ export const EditorStateProvider: React.FC<{ children: React.ReactNode }> = ({ c
   const [currentDocument, setCurrentDocument] = useState<Document | null>(data?.[currentIndex]);
 
   const { toast } = useToast()
-  console.log('EditorStateProvider: documentHistory', documentHistory)
 
   const goToDocument = (index: number) => {
     if (index >= 0 && index < documentHistory.length) {
       setCurrentIndex(index);
-      setCurrentDocument(documentHistory[index]);
-      console.log('EditorStateProvider: goToDocument', index, documentHistory)
       toast({
         title: 'Document loaded',
         description: `Document ${index} loaded`,
@@ -102,11 +99,11 @@ export const EditorStateProvider: React.FC<{ children: React.ReactNode }> = ({ c
   }
 
   const loadNextDocument = () => {
-    console.log('EditorStateProvider: loadNextDocument', currentIndex, documentHistory)
-    if (currentIndex < documentHistory.length - 1) {
+    console.log("what is happening here", currentIndex, data, documentHistory.length)
+    if (currentIndex < data?.length - 1) {
+      console.log("current index")
       setCurrentIndex((prevIndex) => prevIndex + 1);
-      setCurrentDocument(documentHistory[currentIndex + 1]);
-      form.reset({ content: documentHistory[currentIndex + 1].content })
+      form.reset({ content: documentHistory[currentIndex + 1]?.content || '' })
       toast({
         title: 'Document loaded',
         description: `Document ${currentIndex + 1} loaded`,
@@ -116,10 +113,8 @@ export const EditorStateProvider: React.FC<{ children: React.ReactNode }> = ({ c
   };
 
   const loadPreviousDocument = () => {
-    console.log('EditorStateProvider: loadPreviousDocument', currentIndex, documentHistory)
     if (currentIndex > 0) {
       setCurrentIndex((prevIndex) => prevIndex - 1);
-      setCurrentDocument(documentHistory[currentIndex - 1]);
       form.reset({ content: documentHistory[currentIndex - 1].content })
       toast({
         title: 'Document loaded',
@@ -130,10 +125,10 @@ export const EditorStateProvider: React.FC<{ children: React.ReactNode }> = ({ c
   };
 
   const saveDocument = async (document: Document) => {
-    console.log('EditorStateProvider: saveDocument', document)
     const data = await mutation.mutateAsync(document)
-    console.log('EditorStateProvider: saveDocument', data)
-    refetch()
+    await queryClient.invalidateQueries('entries')
+
+    setCurrentIndex(0)
     toast({
       title: 'Document saved',
       description: `Document ${document.id} saved`,
@@ -142,12 +137,10 @@ export const EditorStateProvider: React.FC<{ children: React.ReactNode }> = ({ c
   }
 
   const deleteDocument = async (document: Document) => {
-    console.log('EditorStateProvider: deleteDocument', document)
     const data = await deleteMutation.mutateAsync(document)
-    console.log('EditorStateProvider: deleteDocument', data)
-    setCurrentIndex(prev => prev - 1)
-    queryClient.invalidateQueries('entries')
+    await queryClient.invalidateQueries('entries')
 
+    setCurrentIndex(prev => prev - 1)
     toast({
       title: 'Document deleted',
       description: `Document ${document.id} deleted`,
@@ -156,10 +149,12 @@ export const EditorStateProvider: React.FC<{ children: React.ReactNode }> = ({ c
   }
 
   const addDocument = async (document: Document) => {
-    console.log('EditorStateProvider: addDocument', document)
+    console.log('what the heck is going on here')
     const data = await addMutation.mutateAsync(document)
-    console.log('EditorStateProvider: addDocument', data)
-    queryClient.invalidateQueries('entries')
+    await queryClient.invalidateQueries('entries')
+
+    // setCurrentIndex(data.length - 1)
+    console.log(data.length, currentIndex)
 
     toast({
       title: 'Document added',
@@ -168,16 +163,18 @@ export const EditorStateProvider: React.FC<{ children: React.ReactNode }> = ({ c
     })
   }
 
+  console.log('Current Index', currentIndex)
 
   // log the current document
-  console.log('useEditorEngine: currentDocument', currentDocument)
 
   return (
     <EditorStateContext.Provider value={{
       form,
       isLoading,
       isSuccess,
-      currentDocument,
+      isAdding: addMutation.isPending,
+      isDeleting: deleteMutation.isPending,
+      currentDocument: data?.[currentIndex],
       loadNextDocument,
       loadPreviousDocument,
       goToDocument,

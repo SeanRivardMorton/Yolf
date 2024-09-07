@@ -27,3 +27,5 @@ export default async function Home() {
     </HydrationBoundary >
   );
 }
+
+export const fetchCache = 'force-no-store';

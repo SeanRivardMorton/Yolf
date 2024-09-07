@@ -7,17 +7,6 @@ interface Fetcher {
 
 const BASE_URL = 'http://localhost:3000/api';
 
-// const users = fetcher.GET('users');
-// const entries = fetcher.GET('entries');
-//
-// const newUser = fetcher.POST('users', { name: 'John Doe' });
-// const newEntry = fetcher.POST('entries', { title: 'New Entry', content: 'This is a new entry' });
-//
-// const updatedUser = fetcher.PUT('users/1', { name: 'Jane Doe' });
-// const updatedEntry = fetcher.PUT('entries/1', { title: 'Updated Entry', content: 'This is an updated entry' });
-//
-// const deletedUser = fetcher.DELETE('users/1');
-// const deletedEntry = fetcher.DELETE('entries/1');
 
 const handleErrors = async (response: Response) => {
   if (!response.ok) {
@@ -47,7 +36,6 @@ const handleErrors = async (response: Response) => {
 const customFetch = async (url: string, options: RequestInit) => {
   try {
     const response = await fetch(`${BASE_URL}/${url}`, options);
-    console.log(response)
     return await handleErrors(response);
   } catch (e) {
     console.error(e);
@@ -63,7 +51,6 @@ const fetcher: Fetcher = {
         'Content-Type': 'application/json'
       }
     });
-    console.log('fetcher.GET', response)
 
     return response
   },
