@@ -123,8 +123,12 @@ export const EditorStateProvider: React.FC<{ children: React.ReactNode }> = ({ c
     }
   };
 
+  React.useEffect(() => {
+    form.reset({ content: data?.[currentIndex].content })
+  }, [currentIndex])
+
   const saveDocument = async (document: Document) => {
-    const data = await mutation.mutateAsync(document)
+    await mutation.mutateAsync(document)
     await queryClient.invalidateQueries('entries')
 
     toast({
