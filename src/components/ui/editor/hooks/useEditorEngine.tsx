@@ -9,7 +9,7 @@
 
 import { useToast } from "@/hooks/use-toast";
 import fetcher from "@/lib/fetcher";
-import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
+import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import React from "react";
 import { createContext, useContext, useState } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
@@ -22,12 +22,14 @@ type Document = {
 
 type EditorStateContextType = {
   currentDocument: Document | null;
+  currentIndex: number;
   goToDocument: (index: number) => void;
   loadNextDocument: () => void;
   loadPreviousDocument: () => void;
   saveDocument: (document: Document) => void;
   deleteDocument: (document: Document) => void;
   addDocument: (document: Document) => void;
+  documentHistory: Document[];
   isSuccess: boolean;
   isLoading: boolean;
   form: UseFormReturn<{ content: string }>;
@@ -36,9 +38,12 @@ type EditorStateContextType = {
 const EditorStateContext = createContext<EditorStateContextType | undefined>(undefined);
 
 
+
 // The first implementation will simply be a list of documents. No Graphs. Just a list sorted by date.
 export const EditorStateProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { data, isLoading, isSuccess } = useSuspenseQuery({
+
+  const queryClient = useQueryClient()
+  const { data, isLoading, isSuccess, refetch } = useSuspenseQuery({
     queryKey: ['entries'],
     queryFn: async () => {
       const data = await fetcher.GET('entries')
@@ -75,7 +80,6 @@ export const EditorStateProvider: React.FC<{ children: React.ReactNode }> = ({ c
       content: data?.[0].content
     }
   })
-
 
   const [documentHistory, setDocumentHistory] = useState<Document[]>(data);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -129,6 +133,7 @@ export const EditorStateProvider: React.FC<{ children: React.ReactNode }> = ({ c
     console.log('EditorStateProvider: saveDocument', document)
     const data = await mutation.mutateAsync(document)
     console.log('EditorStateProvider: saveDocument', data)
+    refetch()
     toast({
       title: 'Document saved',
       description: `Document ${document.id} saved`,
@@ -140,6 +145,9 @@ export const EditorStateProvider: React.FC<{ children: React.ReactNode }> = ({ c
     console.log('EditorStateProvider: deleteDocument', document)
     const data = await deleteMutation.mutateAsync(document)
     console.log('EditorStateProvider: deleteDocument', data)
+    setCurrentIndex(prev => prev - 1)
+    queryClient.invalidateQueries('entries')
+
     toast({
       title: 'Document deleted',
       description: `Document ${document.id} deleted`,
@@ -151,6 +159,8 @@ export const EditorStateProvider: React.FC<{ children: React.ReactNode }> = ({ c
     console.log('EditorStateProvider: addDocument', document)
     const data = await addMutation.mutateAsync(document)
     console.log('EditorStateProvider: addDocument', data)
+    queryClient.invalidateQueries('entries')
+
     toast({
       title: 'Document added',
       description: `Document ${data.id} added`,
@@ -173,7 +183,9 @@ export const EditorStateProvider: React.FC<{ children: React.ReactNode }> = ({ c
       goToDocument,
       saveDocument,
       deleteDocument,
-      addDocument
+      addDocument,
+      documentHistory: data,
+      currentIndex,
     }}>
       {children}
     </EditorStateContext.Provider>
