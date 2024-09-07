@@ -1,3 +1,4 @@
+import React from "react"
 import { Textarea } from "../textarea"
 import { useEditorState } from "./hooks/useEditorEngine"
 
