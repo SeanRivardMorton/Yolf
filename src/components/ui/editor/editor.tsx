@@ -5,7 +5,6 @@ import { Controller } from "react-hook-form"
 function Editor() {
   const { currentDocument, saveDocument, form, documentHistory } = useEditorState()
 
-
   const handleSubmit = form.handleSubmit(async (data) => {
     saveDocument({ ...currentDocument, content: data?.content })
   })

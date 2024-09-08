@@ -3,20 +3,22 @@ import { entries } from "@/schema"
 import { eq } from "drizzle-orm"
 import { z } from "zod"
 
-export async function GET(request: Request, { params }: { params: { slug: string } }) {
-  console.log(`GET entries/${params.slug}`)
+export async function GET(request: Request, { params }: { params: { id: string } }) {
+  console.log(`GET entries/${params.id}`)
 
-  const entry = await db.select().from(entries).where(eq(entries.id, 1)).orderBy(entries.updatedAt)
+  const result = await db.select().from(entries).where(eq(entries.id, params.id)).orderBy(entries.updatedAt)
 
-  if (!entry) {
+  if (!result) {
     return Response.json({ message: "Entry not found" }, { status: 404 })
   }
 
-  if (entry.length < 1) {
+  console.log(result)
+
+  if (result.length < 1) {
     return Response.json({ message: "No entries found" }, { status: 404 })
   }
 
-  return Response.json({ entry })
+  return Response.json({ result })
 }
 
 

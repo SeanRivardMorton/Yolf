@@ -10,6 +10,7 @@
 import { useToast } from "@/hooks/use-toast";
 import fetcher from "@/lib/fetcher";
 import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
+import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 import { createContext, useContext, useState } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
@@ -77,6 +78,15 @@ export const EditorStateProvider: React.FC<{ children: React.ReactNode }> = ({ c
     mutationKey: ['entries']
   })
 
+  const router = useRouter()
+  const searchParams = useSearchParams()
+
+  const [filteredData, setFilteredData] = React.useState<Document[]>(data)
+  React.useEffect(() => {
+    const filteredDocumentHistory = data?.filter((document: Document) => document.content?.toLowerCase().includes(searchParams.get('query')?.toLowerCase() || ''))
+    setFilteredData(filteredDocumentHistory)
+  }, [searchParams])
+
   const form = useForm({
     defaultValues: {
       content: data?.[0].content
@@ -100,9 +110,7 @@ export const EditorStateProvider: React.FC<{ children: React.ReactNode }> = ({ c
   }
 
   const loadNextDocument = () => {
-    console.log("what is happening here", currentIndex, data, documentHistory.length)
     if (currentIndex < data?.length - 1) {
-      console.log("current index")
       setCurrentIndex((prevIndex) => prevIndex + 1);
       form.reset({ content: documentHistory[currentIndex + 1]?.content || '' })
       toast({
@@ -153,12 +161,10 @@ export const EditorStateProvider: React.FC<{ children: React.ReactNode }> = ({ c
   }
 
   const addDocument = async (document: Document) => {
-    console.log('what the heck is going on here')
     const data = await addMutation.mutateAsync(document)
     await queryClient.invalidateQueries('entries')
 
-    // setCurrentIndex(data.length - 1)
-    console.log(data.length, currentIndex)
+    router.push(`/`)
 
     toast({
       title: 'Document added',
@@ -167,9 +173,7 @@ export const EditorStateProvider: React.FC<{ children: React.ReactNode }> = ({ c
     })
   }
 
-  console.log('Current Index', currentIndex)
 
-  // log the current document
 
   return (
     <EditorStateContext.Provider value={{
@@ -185,7 +189,7 @@ export const EditorStateProvider: React.FC<{ children: React.ReactNode }> = ({ c
       saveDocument,
       deleteDocument,
       addDocument,
-      documentHistory: data,
+      documentHistory: filteredData || data,
       currentIndex,
     }}>
       {children}

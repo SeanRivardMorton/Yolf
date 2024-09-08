@@ -10,6 +10,7 @@
 import { useToast } from "@/hooks/use-toast";
 import fetcher from "@/lib/fetcher";
 import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
+import { useParams } from "next/navigation";
 import React from "react";
 import { createContext, useContext, useState } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
@@ -42,11 +43,12 @@ const EditorStateContext = createContext<EditorStateContextType | undefined>(und
 // The first implementation will simply be a list of documents. No Graphs. Just a list sorted by date.
 export const EditorStateProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
+  const { id } = useParams();
   const queryClient = useQueryClient()
   const { data, isLoading, isSuccess, refetch } = useSuspenseQuery({
-    queryKey: ['entries'],
+    queryKey: ['entries', id],
     queryFn: async () => {
-      const data = await fetcher.GET('entries')
+      const data = await fetcher.GET(id ? `entries/${id}` : 'entries')
       return data.result
     }
   })

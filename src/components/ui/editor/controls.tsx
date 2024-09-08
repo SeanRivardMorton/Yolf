@@ -1,6 +1,7 @@
 import { Button } from "../button";
-import { ChevronLeft, ChevronRight, SquareIcon } from "lucide-react";
+import { ChevronLeft, ChevronRight, HomeIcon, LibraryIcon, SquareIcon } from "lucide-react";
 import { useEditorState } from "./hooks/useEditorEngine";
+import Link from "next/link";
 
 // displays the amount of documents, and where the current document is.
 // getting hydration errors from Pagination component.
@@ -21,22 +22,20 @@ const Pagination = ({ currentIndex, totalDocuments }: { currentIndex: number; to
 }
 
 function Controls() {
-  const { loadNextDocument, loadPreviousDocument, documentHistory, currentIndex, isAdding, isDeleting } = useEditorState()
-
-  const controls = [
-    { name: 'back', icon: <ChevronLeft className="h-12 w-12" onClick={loadPreviousDocument} /> },
-    // { name: 'home', icon: <HomeIcon className="h-8 w-8" onClick={() => goToDocument(0)} /> },
-    { name: 'forward', icon: <ChevronRight className="h-12 w-12" onClick={loadNextDocument} /> },
-  ]
+  const { loadNextDocument, loadPreviousDocument, documentHistory, currentIndex } = useEditorState()
 
   return (
     <div className="flex flex-row pr-24 gap-4">
       <div className="flex flex-row gap-4 ml-8">
-        {controls.map((control) => (
-          <Button key={control.name} className="bg-stone-950 border-white border-4 h-12 w-12 rounded-lg p-1">
-            {control.icon}
-          </Button>
-        ))}
+        <Button className="bg-stone-950 border-white border-4 h-12 w-12 rounded-lg p-1">
+          <ChevronLeft className="h-12 w-12" onClick={loadPreviousDocument} />
+        </Button>
+        <Link href="/documents" className="bg-stone-950 border-white border-4 h-12 w-12 rounded-lg p-1">
+          <LibraryIcon className="h-8 w-8" />
+        </Link>
+        <Button className="bg-stone-950 border-white border-4 h-12 w-12 rounded-lg p-1">
+          <ChevronRight className="h-12 w-12" onClick={loadNextDocument} />
+        </Button>
       </div>
       <div className="mt-auto">
         <Pagination currentIndex={currentIndex} totalDocuments={documentHistory} />
