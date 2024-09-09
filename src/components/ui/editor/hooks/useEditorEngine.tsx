@@ -43,6 +43,8 @@ const EditorStateContext = createContext<EditorStateContextType | undefined>(und
 // The first implementation will simply be a list of documents. No Graphs. Just a list sorted by date.
 export const EditorStateProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
+  // NOTE: I don't love this. I think a better solution would be to derive current doucment always from the pagination.
+  // I.e, current index would go away, and the current index would be a query route.
   const { id } = useParams();
   const queryClient = useQueryClient()
   const { data, isLoading, isSuccess, refetch } = useSuspenseQuery({
