@@ -11,7 +11,7 @@ export default async function Home({ params }: { params: { id: string } }) {
 
   queryClient.prefetchQuery({
     queryKey: ['posts/' + params.id],
-    queryFn: () => fetcher.GET('entries/' + params.id),
+    queryFn: () => fetcher.GET('entries/' + params.id)
   })
 
   return (

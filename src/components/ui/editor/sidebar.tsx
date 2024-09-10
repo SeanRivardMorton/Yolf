@@ -18,7 +18,7 @@ function Sidebar() {
   return (
     <div className="mt-8 mr-8 flex flex-col gap-4">
       {controls.map((control) => (
-        <Button key={control.name} className="bg-stone-950 p-0  h-24 w-24 border-white border-4 rounded-lg">
+        <Button key={control.name} variant="link" className=" p-0  h-24 w-24 border-white border-4 rounded-lg">
           {control.icon}
         </Button>
       ))}

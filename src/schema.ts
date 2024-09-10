@@ -1,4 +1,4 @@
-import { serial, text, timestamp, pgTable } from "drizzle-orm/pg-core";
+import { serial, text, timestamp, pgTable, uuid } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 // NOTE: View drizzle docs for a better understanding of usage.
@@ -8,10 +8,10 @@ import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 // instead of splitting it up into tiny files.
 
 export const user = pgTable("user", {
-  id: serial("id"),
+  id: uuid("id").defaultRandom(),
   name: text("name"),
-  email: text("email"),
-  password: text("password"),
+  email: text("email").notNull(),
+  password: text("password").notNull(),
   role: text("role").$type<"admin" | "customer">(),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),

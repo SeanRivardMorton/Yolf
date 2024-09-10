@@ -169,10 +169,6 @@ export const EditorStateProvider: React.FC<{ children: React.ReactNode }> = ({ c
     })
   }
 
-  console.log('Current Index', currentIndex)
-
-  // log the current document
-
   return (
     <EditorStateContext.Provider value={{
       form,

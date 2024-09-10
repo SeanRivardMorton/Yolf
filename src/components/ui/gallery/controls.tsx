@@ -27,13 +27,15 @@ function Controls() {
   return (
     <div className="flex flex-row pr-24 gap-4">
       <div className="flex flex-row gap-4 ml-8">
-        <Button className="bg-stone-950 border-white border-4 h-12 w-12 rounded-lg p-1">
+        <Button variant="link" className=" border-white border-4 h-12 w-12 rounded-lg p-1">
           <ChevronLeft className="h-12 w-12" onClick={loadPreviousDocument} />
         </Button>
-        <Link href="/" className="bg-stone-950 border-white border-4 h-12 w-12 rounded-lg p-1">
-          <PencilIcon className="h-8 w-8" />
-        </Link>
-        <Button className="bg-stone-950 border-white border-4 h-12 w-12 rounded-lg p-1">
+        <Button variant="link" asChild className="border-white border-4 h-12 w-12 rounded-lg p-1">
+          <Link href="/">
+            <PencilIcon className="h-12 w-12" />
+          </Link>
+        </Button>
+        <Button variant="link" className=" border-white border-4 h-12 w-12 rounded-lg p-1">
           <ChevronRight className="h-12 w-12" onClick={loadNextDocument} />
         </Button>
       </div>
