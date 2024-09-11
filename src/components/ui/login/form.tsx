@@ -1,18 +1,18 @@
 'use client'
+import { useToast } from "@/hooks/use-toast";
+import { ErrorMessage } from "@hookform/error-message";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { EyeIcon } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Button } from "../button";
 import { Card, CardHeader } from "../card";
+import { Checkbox } from "../checkbox";
 import { Input } from "../input";
 import useAuth from "./hooks/useLogin";
-import Link from "next/link";
 import { Credentials, loginSchema } from "./schema";
-import { useRouter } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ErrorMessage } from "@hookform/error-message";
-import { useToast } from "@/hooks/use-toast";
-import { Checkbox } from "../checkbox";
-import { EyeIcon } from "lucide-react";
-import React from "react";
 
 function LoginForm() {
   const { toast } = useToast()
@@ -60,10 +60,10 @@ function LoginForm() {
           <Controller name="password" control={form.control} render={({ field }) => (
             <Input {...field} type={isPasswordShown} placeholder="Password" />
           )} />
-          <Button variant="outline" size="icon" className="w-1/4" onClick={showPassword}><EyeIcon className="" /></Button>
+          <Button type="button" variant="outline" size="icon" className="w-1/4" onClick={showPassword}><EyeIcon className="" /></Button>
         </div>
         <ErrorMessage errors={form.formState.errors} name="password" />
-        <Button className="border-white border-4" type="button">Log in</Button>
+        <Button className="border-white border-4" type="submit">Log in</Button>
         <div className="flex flex-row align-middle justify-end gap-4">
           <label htmlFor="rememberMe">Remember me</label>
           <Checkbox className="my-auto" {...form.register('rememberMe')} />
