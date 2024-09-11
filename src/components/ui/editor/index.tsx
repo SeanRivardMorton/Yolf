@@ -29,7 +29,7 @@ function EditorEngine({
   return (
     <EditorStateProvider>
       <div className="flex flex-col w-min-[400px] pl-48 pt-24">
-        <div className="justify-center text-4xl text-center mb-24">
+        <div className="justify-end flex flex-row text-4xl text-center mb-24 gap-4 mr-64">
           {heading}
         </div>
         {controls}

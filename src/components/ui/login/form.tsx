@@ -10,9 +10,11 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ErrorMessage } from "@hookform/error-message";
 import { useToast } from "@/hooks/use-toast";
+import { Checkbox } from "../checkbox";
+import { EyeIcon } from "lucide-react";
+import React from "react";
 
 function LoginForm() {
-
   const { toast } = useToast()
   const router = useRouter()
   const { login } = useAuth();
@@ -39,6 +41,12 @@ function LoginForm() {
     })
   });
 
+  const [isPasswordShown, setIsPasswordShown] = React.useState('password');
+
+  const showPassword = () => {
+    setIsPasswordShown(isPasswordShown === 'password' ? 'text' : 'password');
+
+  }
 
   return (
     <form onSubmit={handleSubmit}>
@@ -48,11 +56,18 @@ function LoginForm() {
           <Input {...field} className="" type="text" placeholder="Username" />
         )} />
         <ErrorMessage errors={form.formState.errors} name="email" />
-        <Controller name="password" control={form.control} render={({ field }) => (
-          <Input {...field} type="password" placeholder="Password" />
-        )} />
+        <div className="flex flex-row gap-4">
+          <Controller name="password" control={form.control} render={({ field }) => (
+            <Input {...field} type={isPasswordShown} placeholder="Password" />
+          )} />
+          <Button variant="outline" size="icon" className="w-1/4" onClick={showPassword}><EyeIcon className="" /></Button>
+        </div>
         <ErrorMessage errors={form.formState.errors} name="password" />
-        <Button className="border-white border-4" type="submit">Log in</Button>
+        <Button className="border-white border-4" type="button">Log in</Button>
+        <div className="flex flex-row align-middle justify-end gap-4">
+          <label htmlFor="rememberMe">Remember me</label>
+          <Checkbox className="my-auto" {...form.register('rememberMe')} />
+        </div>
         <div className="flex flex-row justify-center">
           OR
         </div>

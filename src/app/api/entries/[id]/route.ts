@@ -6,7 +6,7 @@ import { z } from "zod"
 export async function GET(request: Request, { params }: { params: { id: string } }) {
   console.log(`GET entries/${params.id}`)
 
-  const result = await db.select().from(entries).where(eq(id, params.id)).orderBy(entries.updatedAt)
+  const result = await db.select().from(entries).where(eq(entries.id, parseInt(params.id))).orderBy(entries.updatedAt)
 
   if (!result) {
     return Response.json({ message: "Entry not found" }, { status: 404 })
@@ -29,12 +29,10 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
   const id = z.coerce.number().parse(params.id)
 
   const result = await db.delete(entries).where(eq(entries.id, id))
-  console.log(result)
 
   if (!result) {
     return Response.json({ message: "Error" }, { status: 404 })
   }
-
 
   return Response.json({ message: "Deleting Entries" });
 }
@@ -46,7 +44,6 @@ export async function PUT(request: Request) {
 
   const result = await db.update(entries).set({ title: body.title, content: body.content }).where(eq(entries.id, body.id)).returning({ title: entries.title })
 
-  console.log(result)
   if (!result) {
     return Response.json({ message: "Error" }, { status: 404 })
   }

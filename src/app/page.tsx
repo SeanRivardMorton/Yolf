@@ -4,9 +4,17 @@ import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query
 import Heading from "@/components/ui/heading";
 
 import EditorEngine, { Controls, Sidebar, Footer, Editor } from "@/components/ui/editor";
+import { handleSession } from "@/lib/session";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
   const queryClient = new QueryClient()
+
+  const session = await handleSession();
+
+  if (!session) {
+    redirect('/login');
+  }
 
   queryClient.prefetchQuery({
     queryKey: ['posts'],

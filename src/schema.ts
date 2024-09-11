@@ -33,3 +33,13 @@ export const entries = pgTable("entries", {
 export const insertEntrySchema = createInsertSchema(entries);
 
 export const selectEntrySchema = createSelectSchema(entries);
+
+export const userSession = pgTable("user_session", {
+  id: uuid("id").defaultRandom(),
+  userId: uuid("user_id"),
+  sessionToken: text("session_token"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+})
+
+

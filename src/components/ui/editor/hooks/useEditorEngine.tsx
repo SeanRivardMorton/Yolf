@@ -47,7 +47,7 @@ export const EditorStateProvider: React.FC<{ children: React.ReactNode }> = ({ c
   // I.e, current index would go away, and the current index would be a query route.
   const { id } = useParams();
   const queryClient = useQueryClient()
-  const { data, isLoading, isSuccess, refetch } = useSuspenseQuery({
+  const { data, isLoading, isSuccess } = useSuspenseQuery({
     queryKey: ['entries', id],
     queryFn: async () => {
       const data = await fetcher.GET(id ? `entries/${id}` : 'entries')

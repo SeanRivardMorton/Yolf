@@ -9,7 +9,7 @@ const Pagination = ({ currentIndex, totalDocuments }: { currentIndex: number; to
   const { goToDocument } = useEditorState()
   return (
     <div className="flex flex-row">
-      {totalDocuments.map((_, index) => (
+      {totalDocuments.map((_: any, index: number) => (
         <div key={index}>
           {false && index}
           <Button variant="outline" size="icon" onClick={() => goToDocument(index)} className="p-0 m-auto h-8 w-8 bg-stone-950 border-none">
@@ -27,13 +27,15 @@ function Controls() {
   return (
     <div className="flex flex-row pr-24 gap-4">
       <div className="flex flex-row gap-4 ml-8">
-        <Button className="bg-stone-950 border-white border-4 h-12 w-12 rounded-lg p-1">
+        <Button className="bg-stone-950 border-white border-4 h-12 w-12 rounded-lg p-1" variant="link">
           <ChevronLeft className="h-12 w-12" onClick={loadPreviousDocument} />
         </Button>
-        <Link href="/documents" className="bg-stone-950 border-white border-4 h-12 w-12 rounded-lg p-1">
-          <LibraryIcon className="h-8 w-8" />
-        </Link>
-        <Button className="bg-stone-950 border-white border-4 h-12 w-12 rounded-lg p-1">
+        <Button variant="link" className="bg-stone-950 border-white border-4 h-12 w-12 rounded-lg p-1">
+          <Link href="/documents" >
+            <LibraryIcon className="h-8 w-8" />
+          </Link>
+        </Button>
+        <Button className="bg-stone-950 border-white border-4 h-12 w-12 rounded-lg p-1" variant="link">
           <ChevronRight className="h-12 w-12" onClick={loadNextDocument} />
         </Button>
       </div>

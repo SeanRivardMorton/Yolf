@@ -8,6 +8,9 @@ import jwt from "jsonwebtoken";
 import { loginSchema } from "@/components/ui/login/schema";
 import { eq } from "drizzle-orm";
 import { user } from "@/schema";
+import { createSecretKey, Sign } from "crypto";
+import { createSession, login } from "@/lib/session";
+import { redirect } from "next/navigation";
 
 // 3. return token
 export async function POST(request: Request) {
@@ -37,11 +40,15 @@ export async function POST(request: Request) {
     return Response.json({ status: 400, result: { message: 'POST LOGIN FAILED' } });
   }
 
-  console.log('POST LOGIN SUCCESS', match)
+  if (!userInDb.id) {
+    return Response.json({ status: 400, result: { message: 'POST LOGIN FAILED' } });
+  }
 
-  // const token = jwt.sign({ id: userInDb.id }, process.env.JWT_SECRET, {
-  //   expiresIn: '30d'
-  // });
+  await login(userInDb.email)
+
+  console.log('got a session')
+
+  // redirect('/')
 
   // return Response.json({ status: 200, result: { token } });
   return Response.json({ status: 200, result: { message: 'POST LOGIN' } });

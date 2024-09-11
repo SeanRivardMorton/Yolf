@@ -43,6 +43,13 @@
       "when": 1725969413055,
       "tag": "0005_talented_longshot",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1725994143734,
+      "tag": "0006_milky_firedrake",
+      "breakpoints": true
     }
   ]
 }
