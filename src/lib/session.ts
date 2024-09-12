@@ -2,6 +2,7 @@ import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
+import { User } from '../schema';
 
 const secretKey = process.env.COOKIE_SECRET;
 const key = new TextEncoder().encode(secretKey);
@@ -15,20 +16,19 @@ export async function encrypt(payload: any) {
 }
 
 export async function decrypt(input: string): Promise<any> {
-  console.log("decrypt: input", input);
   const { payload } = await jwtVerify(input, key, {
     algorithms: ["HS256"],
   });
-  console.log("decrypt: payload", payload);
   return payload;
 }
 
 const expiry = new Date(Date.now() + 2 * 60 * 60 * 1000);
 
-export async function login(email: string) {
+export async function login({ email, name, id }: { email: string, name: string, id: string }) {
   // Verify credentials && get the user
+  console.log('email', email)
 
-  const user = { email: email, name: "John" };
+  const user = { email: email, name: name, id: id };
 
   // Create the session
   const expires = expiry;
@@ -39,6 +39,7 @@ export async function login(email: string) {
 }
 
 export async function logout() {
+  console.log('session.ts LOGOUT')
   // Destroy the session
   cookies().set("session", "", { expires: new Date(0) });
 }

@@ -21,6 +21,11 @@ export default async function Home() {
     queryFn: () => fetcher.GET('entries'),
   })
 
+  queryClient.prefetchQuery({
+    queryKey: ['user'],
+    queryFn: () => fetcher.GET('user'),
+  })
+
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <main>

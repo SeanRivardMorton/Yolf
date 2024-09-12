@@ -2,9 +2,12 @@
 import fetcher from "@/lib/fetcher";
 import { useState } from "react";
 import { Credentials } from "../schema";
+import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 function useAuth() {
   const [login, setLogin] = useState(false);
+  const router = useRouter();
 
   const loginHandler = async (credentials: Credentials) => {
     const result = await fetcher.POST('auth/login', credentials);
@@ -33,8 +36,16 @@ function useAuth() {
     return result;
   }
 
-  const logoutHandler = () => {
-    setLogin(false);
+  const logoutHandler = async () => {
+    const result = await fetcher.GET('auth/logout');
+
+    if (result.status !== 200) {
+      return
+    }
+
+    if (result.status === 200) {
+      router.push('/login');
+    }
   }
 
   const isLoggedIn = () => {

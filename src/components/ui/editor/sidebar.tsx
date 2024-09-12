@@ -7,8 +7,6 @@ function Sidebar() {
 
   const { currentDocument, isDeleting, isAdding, saveDocument, deleteDocument, addDocument } = useEditorState()
 
-  console.log('Sidebar: currentDocument', currentDocument)
-
   const controls = [
     { name: 'Save', icon: <SaveIcon className="h-24 w-24 p-6 " onClick={() => currentDocument && saveDocument(currentDocument)} /> },
     { name: 'Add', icon: isAdding ? <></> : <PlusIcon className="h-24 w-24 p-6" onClick={() => currentDocument && addDocument(currentDocument)} /> },
@@ -27,6 +25,3 @@ function Sidebar() {
 }
 
 export default Sidebar;
-
-// NOTE: I kinda like this.
-// border-white border-4 rounded-lg h-fit

@@ -1,4 +1,3 @@
-import { UserIcon } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../avatar";
 
 function UserAvatar() {

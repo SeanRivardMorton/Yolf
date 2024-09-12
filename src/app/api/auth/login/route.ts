@@ -32,11 +32,8 @@ export async function POST(request: Request) {
     return Response.json({ status: 400, result: { message: 'POST LOGIN FAILED' } });
   }
 
-  await login(userInDb.email)
+  await login({ email: userInDb.email, name: userInDb.name || '', id: userInDb.id });
 
-  // redirect('/')
-
-  // return Response.json({ status: 200, result: { token } });
   return Response.json({ status: 200, result: { message: 'POST LOGIN' } });
 }
 

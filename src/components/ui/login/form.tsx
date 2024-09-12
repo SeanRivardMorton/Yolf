@@ -45,7 +45,6 @@ function LoginForm() {
 
   const showPassword = () => {
     setIsPasswordShown(isPasswordShown === 'password' ? 'text' : 'password');
-
   }
 
   return (

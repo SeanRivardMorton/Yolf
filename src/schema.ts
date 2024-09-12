@@ -17,6 +17,8 @@ export const user = pgTable("user", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+export const User = user;
+
 export const insertUserSchema = createInsertSchema(user);
 
 export const selectUserSchema = createSelectSchema(user);
