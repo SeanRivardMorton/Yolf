@@ -31,7 +31,7 @@ export default async function Home() {
       <main>
         <EditorEngine
           editor={<Editor />}
-          heading={<Heading></Heading>}
+          heading={<Heading />}
           controls={<Controls />}
           sidebar={<Sidebar />}
           footer={<Footer />}

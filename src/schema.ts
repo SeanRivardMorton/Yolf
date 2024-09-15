@@ -30,6 +30,7 @@ export const entries = pgTable("entries", {
   content: text("content"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
+  createdBy: uuid("created_by"),
 })
 
 export const insertEntrySchema = createInsertSchema(entries);

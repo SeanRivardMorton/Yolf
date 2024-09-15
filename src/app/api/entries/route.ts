@@ -1,10 +1,9 @@
 import db from "@/db";
+import { getSession } from "@/lib/session";
 import { entries } from "@/schema";
 import { desc } from "drizzle-orm";
 
 export async function GET() {
-  console.log('GET ENTRIES')
-
   const result = await db.select().from(entries).orderBy(desc(entries.updatedAt))
 
   if (!result) {
@@ -16,18 +15,17 @@ export async function GET() {
     return Response.json({ status: 200, result: [newDocument] });
   }
 
-
   return Response.json({ status: 200, result });
 }
 
 export async function POST(request: Request) {
-  console.log('POST /entries')
-
   const body = await request.json()
+  const session = await getSession()
 
   const result = await db.insert(entries).values({
     title: 'New Entry',
     content: 'New Entry Content',
+    createdBy: session.user.id,
   })
 
   if (!result) {

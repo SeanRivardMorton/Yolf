@@ -33,7 +33,7 @@ type EditorStateContextType = {
   documentHistory: Document[];
   isSuccess: boolean;
   isLoading: boolean;
-  form: UseFormReturn<{ content: string }>;
+  form: UseFormReturn<{ content: string; title: string }>;
   isAdding: boolean;
   isDeleting: boolean;
 };
@@ -81,7 +81,8 @@ export const EditorStateProvider: React.FC<{ children: React.ReactNode }> = ({ c
 
   const form = useForm({
     defaultValues: {
-      content: data?.[0].content
+      content: data?.[0].content,
+      title: data?.[0].title
     }
   })
 
@@ -128,7 +129,7 @@ export const EditorStateProvider: React.FC<{ children: React.ReactNode }> = ({ c
   };
 
   React.useEffect(() => {
-    form.reset({ content: data?.[currentIndex].content })
+    form.reset({ content: data?.[currentIndex].content, title: data?.[currentIndex].title })
   }, [currentIndex])
 
   const saveDocument = async (document: Document) => {

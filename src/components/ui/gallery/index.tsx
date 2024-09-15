@@ -26,7 +26,7 @@ function GalleryEngine({
 }: GalleryLayoutProps) {
   return (
     <EditorStateProvider>
-      <div className="flex flex-col w-min-[400px] pl-48 pt-24">
+      <div className="flex flex-col w-min-[400px] pl-48 ">
         <div className="justify-center text-4xl text-center mb-24">
           {heading}
         </div>
