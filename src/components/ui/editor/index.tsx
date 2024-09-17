@@ -4,6 +4,7 @@ import Footer from './footer'
 import Controls from './controls'
 import Editor from './editor'
 import { EditorStateProvider } from './hooks/useEditorEngine'
+import { RichTextEditor } from './rich-text/rich-text-editor'
 
 
 // NOTE: entries are in the database, which I'm using documents for the editor.
@@ -28,12 +29,12 @@ function EditorEngine({
 }: EditorLayoutProps) {
   return (
     <EditorStateProvider>
-      <div className="flex flex-col w-min-[400px] pl-48 pt-24">
+      <div className="flex flex-col pt-24">
         <div className="">
           {heading}
         </div>
         {controls}
-        <div className="flex flex-row gap-4">
+        <div className="flex flex-row gap-16">
           {editor}
           {sidebar}
         </div>
@@ -43,5 +44,5 @@ function EditorEngine({
   )
 }
 
-export { Sidebar, Footer, Controls, Editor }
+export { Sidebar, Footer, Controls, Editor, RichTextEditor }
 export default EditorEngine

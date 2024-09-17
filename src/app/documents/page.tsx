@@ -5,6 +5,12 @@ import Heading from "@/components/ui/heading";
 
 import EditorEngine, { Controls, Sidebar, Footer, Editor } from "@/components/ui/gallery";
 import { handleSession } from "@/lib/session";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: 'Documents',
+  description: 'View and edir your documents',
+};
 
 export default async function Home() {
   const queryClient = new QueryClient()

@@ -2,10 +2,15 @@ import fetcher from "@/lib/fetcher";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 
 import Heading from "@/components/ui/heading";
-
-import EditorEngine, { Controls, Sidebar, Footer, Editor } from "@/components/ui/editor";
+import EditorEngine, { Controls, Sidebar, Footer, Editor, RichTextEditor } from "@/components/ui/editor";
 import { handleSession } from "@/lib/session";
 import { redirect } from "next/navigation";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: 'Home',
+  description: 'Home page',
+};
 
 export default async function Home() {
   const queryClient = new QueryClient()
@@ -30,7 +35,7 @@ export default async function Home() {
     <HydrationBoundary state={dehydrate(queryClient)}>
       <main>
         <EditorEngine
-          editor={<Editor />}
+          editor={<RichTextEditor document={'<div>I am from up here brother</div>'} />}
           heading={<Heading />}
           controls={<Controls />}
           sidebar={<Sidebar />}

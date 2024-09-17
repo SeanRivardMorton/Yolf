@@ -1,0 +1,66 @@
+.ProseMirror {
+  border: 4px solid #ccc;
+  border-radius: 0.35rem;
+  padding: 1rem;
+  outline: none;
+  font-size: 1.50rem;
+  min-height: 700px;
+}
+
+main {
+  margin: auto;
+  width: 80%;
+  max-width: 1400px;
+}
+
+.menu {
+  display: flex;
+  margin-bottom: 5px;
+}
+
+.button {
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  margin-right: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: none;
+  border: thin solid #ccc;
+  border-radius: 0.25rem;
+  color: black;
+  background-color: white;
+
+  &[aria-pressed="true"] {
+    background-color: #ddd;
+    color: blue;
+  }
+}
+
+blockQuote {
+  border-left: 2px solid #ccc;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 1rem;
+  color: #666;
+}
+
+.button.bold {
+  font-weight: 700;
+}
+
+.button.italic {
+  font-style: italic;
+}
+
+.visually-hidden {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+

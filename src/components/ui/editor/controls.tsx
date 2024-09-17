@@ -25,8 +25,8 @@ function Controls() {
   const { loadNextDocument, loadPreviousDocument, documentHistory, currentIndex } = useEditorState()
 
   return (
-    <div className="flex flex-row pr-24 gap-4">
-      <div className="flex flex-row gap-4 ml-8">
+    <div className="flex flex-row gap-4">
+      <div className="flex flex-row gap-4 mb-8">
         <Button className="bg-stone-950 border-white border-4 h-12 w-12 rounded-lg p-1" variant="link">
           <ChevronLeft className="h-12 w-12" onClick={loadPreviousDocument} />
         </Button>
@@ -39,7 +39,7 @@ function Controls() {
           <ChevronRight className="h-12 w-12" onClick={loadNextDocument} />
         </Button>
       </div>
-      <div className="mt-auto">
+      <div>
         <Pagination currentIndex={currentIndex} totalDocuments={documentHistory} />
       </div>
     </div>
